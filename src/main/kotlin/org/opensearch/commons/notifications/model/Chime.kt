@@ -80,6 +80,10 @@ data class Chime(
         url = input.readString()
     )
 
+    fun constructMessageContent(subject: String?, message: String): String {
+        return if (Strings.isNullOrEmpty(subject)) message else "$subject \n\n $message"
+    }
+
     /**
      * {@inheritDoc}
      */

@@ -21,7 +21,7 @@ import java.io.IOException
  * Data class representing Slack channel.
  */
 data class Slack(
-    val url: String
+        val url: String
 ) : BaseConfigData {
 
     init {
@@ -52,9 +52,9 @@ data class Slack(
             var url: String? = null
 
             XContentParserUtils.ensureExpectedToken(
-                XContentParser.Token.START_OBJECT,
-                parser.currentToken(),
-                parser
+                    XContentParser.Token.START_OBJECT,
+                    parser.currentToken(),
+                    parser
             )
             while (parser.nextToken() != XContentParser.Token.END_OBJECT) {
                 val fieldName = parser.currentName()
@@ -77,7 +77,7 @@ data class Slack(
      * @param input StreamInput stream to deserialize data from.
      */
     constructor(input: StreamInput) : this(
-        url = input.readString()
+            url = input.readString()
     )
 
     /**
@@ -93,7 +93,13 @@ data class Slack(
     override fun toXContent(builder: XContentBuilder?, params: ToXContent.Params?): XContentBuilder {
         builder!!
         return builder.startObject()
-            .field(URL_TAG, url)
-            .endObject()
+                .field(URL_TAG, url)
+                .endObject()
+    }
+
+
+    // Complete JSON structure is now constructed in the notification plugin
+    fun constructMessageContent(subject: String?, message: String): String {
+        return if (Strings.isNullOrEmpty(subject)) message else "$subject \n\n $message"
     }
 }
